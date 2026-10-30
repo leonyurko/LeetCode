@@ -1,0 +1,14 @@
+/*
+Rank the salaries inside each department with DENSE_RANK so that equal
+salaries share the same rank and no rank numbers are skipped.
+Then keep only the rows ranked 1, 2 or 3 and join to Department for its name.
+*/
+
+SELECT d.name AS Department, r.name AS Employee, r.salary AS Salary
+FROM (
+    SELECT name, salary, departmentId,
+           DENSE_RANK() OVER (PARTITION BY departmentId ORDER BY salary DESC) AS rnk
+    FROM Employee
+) r
+JOIN Department d ON d.id = r.departmentId
+WHERE r.rnk <= 3;
