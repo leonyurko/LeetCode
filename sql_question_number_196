@@ -1,0 +1,9 @@
+/*
+Self-join Person on equal emails and delete every row that has another row
+with the same email and a smaller id, leaving only the smallest id per email.
+*/
+
+DELETE p1
+FROM Person p1
+JOIN Person p2
+  ON p1.email = p2.email AND p1.id > p2.id;
